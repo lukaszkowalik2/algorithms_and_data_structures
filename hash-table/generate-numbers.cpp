@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
   }
 
   for (int i = 0; i < count; ++i) {
-    outFile << (std::rand() % 65536) << '\n';
+    outFile << (std::rand() % 100) << '\n';
   }
 
   outFile.close();

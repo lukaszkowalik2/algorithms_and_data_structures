@@ -27,7 +27,7 @@ run: $(BUILD_DIR)/$(TARGET)
 	./$(BUILD_DIR)/$(TARGET) numbers.txt
 
 generate: $(BUILD_DIR)/$(GENERATOR)
-	./$(BUILD_DIR)/$(GENERATOR) 100
+	./$(BUILD_DIR)/$(GENERATOR) 40
 
 zip:
 	zip -r hash-table.zip $(SRC) $(GEN_SRC) Makefile
