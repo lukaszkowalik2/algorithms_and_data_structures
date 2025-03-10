@@ -1,50 +1,66 @@
 #ifndef DICTIONARY_SIMPLE_HPP
 #define DICTIONARY_SIMPLE_HPP
 
+#include <cstring>
 #include <iostream>
-#include <list>
 #include <stdexcept>
 #include <string>
-#include <vector>
-
-struct Bucket {
-  std::list<std::string> entries;
-};
 
 class DictionarySimple {
   private:
-  std::vector<Bucket> table;
+  std::string *table;
   size_t capacity;
-  size_t size;
+  size_t count;
   const size_t MAX_STRING_LENGTH = 50;
-
-  size_t hash(const std::string &s) const {
-    return std::hash<std::string>{}(s) % capacity;
-  }
 
   bool isValidString(const std::string &s) const {
     return s.size() == MAX_STRING_LENGTH;
   }
 
-  void rehash() {
+  void resize() {
     size_t new_capacity = capacity * 2;
-    std::vector<Bucket> new_table(new_capacity);
+    std::string *new_table = new std::string[new_capacity];
 
-    for (const auto &bucket : table) {
-      for (const auto &entry : bucket.entries) {
-        size_t new_index = std::hash<std::string>{}(entry) % new_capacity;
-        new_table[new_index].entries.push_back(entry);
-      }
+    for (size_t i = 0; i < count; i++) {
+      new_table[i] = table[i];
     }
 
-    table = std::move(new_table);
+    delete[] table;
+    table = new_table;
     capacity = new_capacity;
   }
 
   public:
-  DictionarySimple(size_t initial_capacity = 100)
-      : capacity(initial_capacity), size(0) {
-    table.resize(capacity);
+  DictionarySimple() : capacity(10), count(0) {
+    table = new std::string[capacity];
+  }
+
+  DictionarySimple(size_t initial_capacity) : capacity(initial_capacity), count(0) {
+    table = new std::string[capacity];
+  }
+
+  ~DictionarySimple() {
+    delete[] table;
+  }
+
+  DictionarySimple(const DictionarySimple &other) : capacity(other.capacity), count(other.count) {
+    table = new std::string[capacity];
+    for (size_t i = 0; i < count; i++) {
+      table[i] = other.table[i];
+    }
+  }
+
+  DictionarySimple &operator=(const DictionarySimple &other) {
+    if (this != &other) {
+      delete[] table;
+      capacity = other.capacity;
+      count = other.count;
+      table = new std::string[capacity];
+      for (size_t i = 0; i < count; i++) {
+        table[i] = other.table[i];
+      }
+    }
+    return *this;
   }
 
   void insert(const std::string &s) {
@@ -52,39 +68,34 @@ class DictionarySimple {
       throw std::invalid_argument("String must be 50 characters long");
     }
 
-    size_t index = hash(s);
-    for (const auto &entry : table[index].entries) {
-      if (entry == s)
+    for (size_t i = 0; i < count; i++) {
+      if (table[i] == s)
         return;
     }
 
-    table[index].entries.push_back(s);
-    size++;
-
-    if (size > 0.7 * capacity) {
-      rehash();
+    if (count >= capacity) {
+      resize();
     }
+
+    table[count] = s;
+    count++;
   }
 
   void remove(const std::string &s) {
-    size_t index = hash(s);
-    auto &entries = table[index].entries;
-
-    for (auto it = entries.begin(); it != entries.end(); ++it) {
-      if (*it == s) {
-        entries.erase(it);
-        size--;
+    for (size_t i = 0; i < count; i++) {
+      if (table[i] == s) {
+        for (size_t j = i; j < count - 1; j++) {
+          table[j] = table[j + 1];
+        }
+        count--;
         return;
       }
     }
   }
 
   bool contains(const std::string &s) const {
-    size_t index = hash(s);
-    const auto &entries = table[index].entries;
-
-    for (const auto &entry : entries) {
-      if (entry == s)
+    for (size_t i = 0; i < count; i++) {
+      if (table[i] == s)
         return true;
     }
     return false;
