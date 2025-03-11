@@ -330,14 +330,9 @@ void generateComparisonScripts() {
   insertTimeScript << "set title 'Insert Operation - Time Comparison' font 'Arial,14'\n";
   insertTimeScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   insertTimeScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  insertTimeScript << "# Funkcje referencyjne dla złożoności\n";
-  insertTimeScript << "f(x) = 0.01 * x\n";
-  insertTimeScript << "g(x) = 0.01 * x * log(x)\n";
   insertTimeScript << "plot 'data/time_LinkedList_Insert.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
   insertTimeScript << "     'data/time_SimpleArray_Insert.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  insertTimeScript << "     'data/time_Dictionary_Insert.txt' using 1:2 with linespoints ls 3 title 'Dictionary', \\\n";
-  insertTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  insertTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  insertTimeScript << "     'data/time_Dictionary_Insert.txt' using 1:2 with linespoints ls 3 title 'Dictionary'\n";
   insertTimeScript.close();
 
   std::ofstream searchTimeScript("data/plot_search_time.gnu");
@@ -354,14 +349,9 @@ void generateComparisonScripts() {
   searchTimeScript << "set title 'Search Operation - Time Comparison' font 'Arial,14'\n";
   searchTimeScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   searchTimeScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  searchTimeScript << "# Funkcje referencyjne dla złożoności\n";
-  searchTimeScript << "f(x) = 0.001 * x\n";
-  searchTimeScript << "g(x) = 0.001 * x * log(x)\n";
   searchTimeScript << "plot 'data/time_LinkedList_Search.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
   searchTimeScript << "     'data/time_SimpleArray_Search.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  searchTimeScript << "     'data/time_Dictionary_Search.txt' using 1:2 with linespoints ls 3 title 'Dictionary', \\\n";
-  searchTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  searchTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  searchTimeScript << "     'data/time_Dictionary_Search.txt' using 1:2 with linespoints ls 3 title 'Dictionary'\n";
   searchTimeScript.close();
 
   std::ofstream removeTimeScript("data/plot_remove_time.gnu");
@@ -378,14 +368,9 @@ void generateComparisonScripts() {
   removeTimeScript << "set title 'Remove Operation - Time Comparison' font 'Arial,14'\n";
   removeTimeScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   removeTimeScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  removeTimeScript << "# Funkcje referencyjne dla złożoności\n";
-  removeTimeScript << "f(x) = 0.001 * x\n";
-  removeTimeScript << "g(x) = 0.001 * x * log(x)\n";
   removeTimeScript << "plot 'data/time_LinkedList_Remove.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
   removeTimeScript << "     'data/time_SimpleArray_Remove.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  removeTimeScript << "     'data/time_Dictionary_Remove.txt' using 1:2 with linespoints ls 3 title 'Dictionary', \\\n";
-  removeTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  removeTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  removeTimeScript << "     'data/time_Dictionary_Remove.txt' using 1:2 with linespoints ls 3 title 'Dictionary'\n";
   removeTimeScript.close();
 
   std::ofstream unionTimeScript("data/plot_union_time.gnu");
@@ -401,13 +386,8 @@ void generateComparisonScripts() {
   unionTimeScript << "set title 'Union Operation - Time Comparison' font 'Arial,14'\n";
   unionTimeScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   unionTimeScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  unionTimeScript << "# Funkcje referencyjne dla złożoności\n";
-  unionTimeScript << "f(x) = 0.01 * x\n";
-  unionTimeScript << "g(x) = 0.01 * x * log(x)\n";
   unionTimeScript << "plot 'data/time_LinkedList_Union.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
-  unionTimeScript << "     'data/time_SimpleArray_Union.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  unionTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  unionTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  unionTimeScript << "     'data/time_SimpleArray_Union.txt' using 1:2 with linespoints ls 2 title 'SimpleArray'\n";
   unionTimeScript.close();
 
   std::ofstream intersectionTimeScript("data/plot_intersection_time.gnu");
@@ -423,13 +403,8 @@ void generateComparisonScripts() {
   intersectionTimeScript << "set title 'Intersection Operation - Time Comparison' font 'Arial,14'\n";
   intersectionTimeScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   intersectionTimeScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  intersectionTimeScript << "# Funkcje referencyjne dla złożoności\n";
-  intersectionTimeScript << "f(x) = 0.01 * x\n";
-  intersectionTimeScript << "g(x) = 0.01 * x * log(x)\n";
   intersectionTimeScript << "plot 'data/time_LinkedList_Intersection.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
-  intersectionTimeScript << "     'data/time_SimpleArray_Intersection.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  intersectionTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  intersectionTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  intersectionTimeScript << "     'data/time_SimpleArray_Intersection.txt' using 1:2 with linespoints ls 2 title 'SimpleArray'\n";
   intersectionTimeScript.close();
 
   std::ofstream insertMemoryScript("data/plot_insert_memory.gnu");
@@ -446,14 +421,9 @@ void generateComparisonScripts() {
   insertMemoryScript << "set title 'Insert Operation - Memory Comparison' font 'Arial,14'\n";
   insertMemoryScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   insertMemoryScript << "set ylabel 'Memory (KB)' font 'Arial,12'\n";
-  insertMemoryScript << "# Funkcje referencyjne dla złożoności pamięciowej\n";
-  insertMemoryScript << "f(x) = 0.1 * x\n";
-  insertMemoryScript << "g(x) = 0.5 * x\n";
   insertMemoryScript << "plot 'data/memory_LinkedList_Insert.txt' using 1:2 with linespoints ls 1 title 'LinkedList', \\\n";
   insertMemoryScript << "     'data/memory_SimpleArray_Insert.txt' using 1:2 with linespoints ls 2 title 'SimpleArray', \\\n";
-  insertMemoryScript << "     'data/memory_Dictionary_Insert.txt' using 1:2 with linespoints ls 3 title 'Dictionary', \\\n";
-  insertMemoryScript << "     f(x) title 'O(n) - niskie zużycie' with lines lt 0 lw 2, \\\n";
-  insertMemoryScript << "     g(x) title 'O(n) - wysokie zużycie' with lines lt 0 lw 2\n";
+  insertMemoryScript << "     'data/memory_Dictionary_Insert.txt' using 1:2 with linespoints ls 3 title 'Dictionary'\n";
   insertMemoryScript.close();
 
   std::ofstream logTimeScript("data/plot_log_time.gnu");
@@ -471,14 +441,9 @@ void generateComparisonScripts() {
   logTimeScript << "set title 'Insert Operation - Log Scale Time Comparison' font 'Arial,14'\n";
   logTimeScript << "set xlabel 'Input Size (log scale)' font 'Arial,12'\n";
   logTimeScript << "set ylabel 'Time (ms) (log scale)' font 'Arial,12'\n";
-  logTimeScript << "f(x) = 0.01 * x\n";
-  logTimeScript << "g(x) = 0.01 * x * log(x)\n";
   logTimeScript << "plot 'data/log_LinkedList_Insert.txt' using 1:($2 > 0 ? $2 : 0.001) with linespoints ls 1 title 'LinkedList', \\\n";
   logTimeScript << "     'data/log_SimpleArray_Insert.txt' using 1:($2 > 0 ? $2 : 0.001) with linespoints ls 2 title 'SimpleArray', \\\n";
-  logTimeScript << "     'data/log_Dictionary_Insert.txt' using 1:($2 > 0 ? $2 : 0.001) with linespoints ls 3 title 'Dictionary', \\\n";
-  logTimeScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  logTimeScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
-  logTimeScript << "unset logscale\n";
+  logTimeScript << "     'data/log_Dictionary_Insert.txt' using 1:($2 > 0 ? $2 : 0.001) with linespoints ls 3 title 'Dictionary'\n";
   logTimeScript.close();
 
   std::ofstream linkedAllScript("data/plot_linked_all.gnu");
@@ -497,16 +462,11 @@ void generateComparisonScripts() {
   linkedAllScript << "set title 'LinkedList - All Operations Comparison' font 'Arial,14'\n";
   linkedAllScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   linkedAllScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  linkedAllScript << "# Funkcje referencyjne dla złożoności\n";
-  linkedAllScript << "f(x) = 0.01 * x\n";
-  linkedAllScript << "g(x) = 0.01 * x * log(x)\n";
   linkedAllScript << "plot 'data/time_LinkedList_Insert.txt' using 1:2 with linespoints ls 1 title 'Insert', \\\n";
   linkedAllScript << "     'data/time_LinkedList_Search.txt' using 1:2 with linespoints ls 2 title 'Search', \\\n";
   linkedAllScript << "     'data/time_LinkedList_Remove.txt' using 1:2 with linespoints ls 3 title 'Remove', \\\n";
   linkedAllScript << "     'data/time_LinkedList_Union.txt' using 1:2 with linespoints ls 4 title 'Union', \\\n";
-  linkedAllScript << "     'data/time_LinkedList_Intersection.txt' using 1:2 with linespoints ls 5 title 'Intersection', \\\n";
-  linkedAllScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  linkedAllScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  linkedAllScript << "     'data/time_LinkedList_Intersection.txt' using 1:2 with linespoints ls 5 title 'Intersection'\n";
   linkedAllScript.close();
 
   std::ofstream simpleAllScript("data/plot_simple_all.gnu");
@@ -525,16 +485,11 @@ void generateComparisonScripts() {
   simpleAllScript << "set title 'SimpleArray - All Operations Comparison' font 'Arial,14'\n";
   simpleAllScript << "set xlabel 'Input Size' font 'Arial,12'\n";
   simpleAllScript << "set ylabel 'Time (ms)' font 'Arial,12'\n";
-  simpleAllScript << "# Funkcje referencyjne dla złożoności\n";
-  simpleAllScript << "f(x) = 0.01 * x\n";
-  simpleAllScript << "g(x) = 0.01 * x * log(x)\n";
   simpleAllScript << "plot 'data/time_SimpleArray_Insert.txt' using 1:2 with linespoints ls 1 title 'Insert', \\\n";
   simpleAllScript << "     'data/time_SimpleArray_Search.txt' using 1:2 with linespoints ls 2 title 'Search', \\\n";
   simpleAllScript << "     'data/time_SimpleArray_Remove.txt' using 1:2 with linespoints ls 3 title 'Remove', \\\n";
   simpleAllScript << "     'data/time_SimpleArray_Union.txt' using 1:2 with linespoints ls 4 title 'Union', \\\n";
-  simpleAllScript << "     'data/time_SimpleArray_Intersection.txt' using 1:2 with linespoints ls 5 title 'Intersection', \\\n";
-  simpleAllScript << "     f(x) title 'O(n)' with lines lt 0 lw 2, \\\n";
-  simpleAllScript << "     g(x) title 'O(n log n)' with lines lt 0 lw 2\n";
+  simpleAllScript << "     'data/time_SimpleArray_Intersection.txt' using 1:2 with linespoints ls 5 title 'Intersection'\n";
   simpleAllScript.close();
 }
 
