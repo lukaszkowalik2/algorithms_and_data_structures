@@ -3,17 +3,17 @@
 
 #include "set-int-hashed.h"
 
-class priorityQueue {
-private:
-    setIntHashed storage;
+class PriorityQueue {
+  private:
+  SetIntHashed storage;
 
-public:
-    priorityQueue(size_t initial_capacity = 10);
+  public:
+  PriorityQueue(size_t initialCapacity = 10);
 
-    void insert(int element);
-    int pop();
-    bool empty() const;
-    size_t size() const;
+  void insert(int element);
+  int pop();
+  bool isEmpty() const;
+  size_t getSize() const;
 };
 
 #endif // PRIORITY_QUEUE_H

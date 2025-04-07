@@ -1,39 +1,39 @@
 #include "priority-queue.h"
-#include <vector>
 #include <limits>
 #include <stdexcept>
+#include <vector>
 
-priorityQueue::priorityQueue(size_t initial_capacity) : storage(initial_capacity) {}
+PriorityQueue::PriorityQueue(size_t initialCapacity) : storage(initialCapacity) {}
 
-void priorityQueue::insert(int element) {
-    storage.insert(element);
+void PriorityQueue::insert(int element) {
+  storage.insert(element);
 }
 
-int priorityQueue::pop() {
-    if (storage.empty()) {
-        throw std::runtime_error("Cannot pop from an empty priority queue");
-    }
+int PriorityQueue::pop() {
+  if (storage.empty()) {
+    throw std::runtime_error("Cannot pop from an empty priority queue");
+  }
 
-    std::vector<int> elements = storage.get_elements();
-    if (elements.empty()) {
-         throw std::logic_error("Internal error: storage not empty but get_elements is");
-    }
+  std::vector<int> elements = storage.getElements();
+  if (elements.empty()) {
+    throw std::logic_error("Internal error: storage not empty but getElements is");
+  }
 
-    int min_priority = elements[0];
-    for (size_t i = 1; i < elements.size(); ++i) {
-        if (elements[i] < min_priority) {
-            min_priority = elements[i];
-        }
+  int minPriority = elements[0];
+  for (size_t i = 1; i < elements.size(); ++i) {
+    if (elements[i] < minPriority) {
+      minPriority = elements[i];
     }
+  }
 
-    storage.remove(min_priority);
-    return min_priority;
+  storage.remove(minPriority);
+  return minPriority;
 }
 
-bool priorityQueue::empty() const {
-    return storage.empty();
+bool PriorityQueue::isEmpty() const {
+  return storage.empty();
 }
 
-size_t priorityQueue::size() const {
-    return storage.size();
+size_t PriorityQueue::getSize() const {
+  return storage.size();
 }
