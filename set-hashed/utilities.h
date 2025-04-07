@@ -1,28 +1,30 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <string>
-#include <vector>
 #include <chrono>
-#include <fstream>
-#include <utility>
 #include <cstddef>
+#include <fstream>
+#include <string>
+#include <utility>
+#include <vector>
 
-bool ensure_directory_exists(const std::string& path);
+bool ensureDirectoryExists(const std::string &path);
 
-std::string generate_random_string(size_t length = 4);
+void testResult(bool condition, const std::string &testName);
 
-void save_data_to_file(
-    const std::string& filename,
-    const std::vector<std::pair<size_t, double>>& data);
+std::string generateRandomString(size_t length = 4);
+
+void saveDataToFile(
+    const std::string &filename,
+    const std::vector<std::pair<size_t, double>> &data);
 
 class Timer {
-private:
-    std::chrono::high_resolution_clock::time_point start_time;
+  private:
+  std::chrono::high_resolution_clock::time_point startTime;
 
-public:
-    void start();
-    double stop();
+  public:
+  void start();
+  double stop();
 };
 
 #endif // UTILITIES_H
