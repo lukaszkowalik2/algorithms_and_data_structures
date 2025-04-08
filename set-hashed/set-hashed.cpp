@@ -1,6 +1,7 @@
-#include "set-hashed.h"
 #include <algorithm>
 #include <iostream>
+
+#include "set-hashed.h"
 
 size_t setHashed::hash(const std::string &element) const {
   std::hash<std::string> hasher;
