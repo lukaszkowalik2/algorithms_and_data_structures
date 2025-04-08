@@ -1,7 +1,8 @@
-#include "priority-queue.h"
 #include <limits>
 #include <stdexcept>
 #include <vector>
+
+#include "priority-queue.h"
 
 PriorityQueue::PriorityQueue(size_t initialCapacity) : storage(initialCapacity) {}
 

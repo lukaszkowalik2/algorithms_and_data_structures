@@ -10,8 +10,6 @@
 
 bool ensureDirectoryExists(const std::string &path);
 
-int generateRandomInt(int minVal = 0, int maxVal = 1000000);
-
 void saveDataToFile(
     const std::string &filename,
     const std::vector<std::pair<size_t, double>> &data);

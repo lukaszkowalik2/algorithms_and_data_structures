@@ -1,10 +1,11 @@
-#include "utilities.h"
 #include <algorithm>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <random>
 #include <stdexcept>
+
+#include "utilities.h"
 
 bool ensureDirectoryExists(const std::string &path) {
   std::error_code ec;
@@ -18,21 +19,6 @@ bool ensureDirectoryExists(const std::string &path) {
     }
   }
   return std::filesystem::exists(path, ec) && std::filesystem::is_directory(path, ec);
-}
-
-std::string generateRandomString(size_t length) {
-  const std::string characters =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  std::random_device randomDevice;
-  std::mt19937 generator(randomDevice());
-  std::uniform_int_distribution<> distribution(0, characters.length() - 1);
-
-  std::string randomString;
-  randomString.reserve(length);
-  for (size_t i = 0; i < length; ++i) {
-    randomString += characters[distribution(generator)];
-  }
-  return randomString;
 }
 
 int generateRandomInt(int minVal, int maxVal) {
