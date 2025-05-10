@@ -1,4 +1,4 @@
-#include "graph.hpp"
+#include "adt-graph-matrix.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -7,9 +7,9 @@
 const EdgeValue NO_EDGE = 0;
 const EdgeValue DEFAULT_EDGE = 1;
 
-Graph::Graph(): currentNumVertices(0) {}
+ADTGraphMatrix::ADTGraphMatrix(): currentNumVertices(0) {}
 
-int Graph::getInternalIndex(VertexId v_id) const {
+int ADTGraphMatrix::getInternalIndex(VertexId v_id) const {
   auto it = vertexToIndexMap.find(v_id);
   if (it == vertexToIndexMap.end()) {
     throw std::out_of_range("Vertex with ID " + std::to_string(v_id) +
@@ -18,20 +18,20 @@ int Graph::getInternalIndex(VertexId v_id) const {
   return it -> second;
 }
 
-bool Graph::isValidInternalIndex(int idx) const {
+bool ADTGraphMatrix::isValidInternalIndex(int idx) const {
   return idx >= 0 && static_cast<size_t>(idx) < currentNumVertices;
 }
 
-size_t Graph::getNumVertices() const {
+size_t ADTGraphMatrix::getNumVertices() const {
   return currentNumVertices;
 }
 
-bool Graph::vertexExists(VertexId x) const {
+bool ADTGraphMatrix::vertexExists(VertexId x) const {
   return vertexToIndexMap.count(x) > 0;
 }
 
 // 1. adjacent(G, x, y)
-bool Graph::adjacent(VertexId x, VertexId y) const {
+bool ADTGraphMatrix::adjacent(VertexId x, VertexId y) const {
   if (!vertexExists(x) || !vertexExists(y)) {
     return false;
   }
@@ -42,7 +42,7 @@ bool Graph::adjacent(VertexId x, VertexId y) const {
 }
 
 // 2. neighbours(G, x)
-std::vector<VertexId> Graph::neighbours(VertexId x) const {
+std::vector<VertexId> ADTGraphMatrix::neighbours(VertexId x) const {
   std::vector<VertexId> result;
   if (!vertexExists(x)) {
     return result;
@@ -58,7 +58,7 @@ std::vector<VertexId> Graph::neighbours(VertexId x) const {
 }
 
 // 3. addVertex(G, x, val)
-void Graph::addVertex(VertexId x, VertexValue val) {
+void ADTGraphMatrix::addVertex(VertexId x, VertexValue val) {
   if (vertexExists(x)) {
     return;
   }
@@ -75,7 +75,7 @@ void Graph::addVertex(VertexId x, VertexValue val) {
 }
 
 // 4. removeVertex(G, x)
-void Graph::removeVertex(VertexId x) {
+void ADTGraphMatrix::removeVertex(VertexId x) {
   if (!vertexExists(x)) {
     return;
   }
@@ -104,7 +104,7 @@ void Graph::removeVertex(VertexId x) {
 }
 
 // 5. addEdge(G, x, y, val)
-void Graph::addEdge(VertexId x, VertexId y, EdgeValue val) {
+void ADTGraphMatrix::addEdge(VertexId x, VertexId y, EdgeValue val) {
   if (!vertexExists(x) || !vertexExists(y)) {
     throw std::out_of_range(
       "One or both vertices not found for addEdge.");
@@ -117,7 +117,7 @@ void Graph::addEdge(VertexId x, VertexId y, EdgeValue val) {
 }
 
 // 6. removeEdge(G, x, y)
-void Graph::removeEdge(VertexId x, VertexId y) {
+void ADTGraphMatrix::removeEdge(VertexId x, VertexId y) {
   if (!vertexExists(x) || !vertexExists(y)) {
     return;
   }
@@ -129,7 +129,7 @@ void Graph::removeEdge(VertexId x, VertexId y) {
 }
 
 // 7. getVertexValue(G, x)
-std::optional<VertexValue> Graph::getVertexValue(VertexId x) const {
+std::optional<VertexValue> ADTGraphMatrix::getVertexValue(VertexId x) const {
   if (!vertexExists(x)) {
     return std::nullopt;
   }
@@ -139,7 +139,7 @@ std::optional<VertexValue> Graph::getVertexValue(VertexId x) const {
 }
 
 // 8. setVertexValue(G, x, v)
-void Graph::setVertexValue(VertexId x, VertexValue v) {
+void ADTGraphMatrix::setVertexValue(VertexId x, VertexValue v) {
   if (!vertexExists(x)) {
     return;
   }
@@ -149,7 +149,7 @@ void Graph::setVertexValue(VertexId x, VertexValue v) {
 }
 
 // 9. getEdgeValue(G, x, y)
-std::optional<EdgeValue> Graph::getEdgeValue(VertexId x, VertexId y) const {
+std::optional<EdgeValue> ADTGraphMatrix::getEdgeValue(VertexId x, VertexId y) const {
   if (!vertexExists(x) || !vertexExists(y)) {
     return std::nullopt;
   }
@@ -164,7 +164,7 @@ std::optional<EdgeValue> Graph::getEdgeValue(VertexId x, VertexId y) const {
 }
 
 // 10. setEdgeValue(G, x, y, v)
-void Graph::setEdgeValue(VertexId x, VertexId y, EdgeValue v) {
+void ADTGraphMatrix::setEdgeValue(VertexId x, VertexId y, EdgeValue v) {
   if (v == NO_EDGE) {
     removeEdge(x, y);
     return;
@@ -179,7 +179,7 @@ void Graph::setEdgeValue(VertexId x, VertexId y, EdgeValue v) {
   adjMatrix[idx_y][idx_x] = v;
 }
 
-void Graph::printMatrix() const {
+void ADTGraphMatrix::printMatrix() const {
   std::cout << "Adjacency Matrix (" << currentNumVertices << "x" <<
     currentNumVertices << "):\n";
   std::cout << "   |";
@@ -221,7 +221,7 @@ void Graph::printMatrix() const {
   }
 }
 
-void Graph::exportToDotFile(const std::string& filename) const {
+void ADTGraphMatrix::exportToDotFile(const std::string& filename) const {
     std::ofstream outfile(filename);
     if (!outfile.is_open()) {
         std::cerr << "Error: Could not open file " << filename

@@ -1,6 +1,6 @@
 // graph.hpp
-#ifndef GRAPH_HPP
-#define GRAPH_HPP
+#ifndef ADT_GRAPH_MATRIX_HPP
+#define ADT_GRAPH_MATRIX_HPP
 
 #include <map>
 #include <optional>
@@ -12,7 +12,7 @@ using VertexId = int;
 using VertexValue = int;
 using EdgeValue = int;
 
-class Graph {
+class ADTGraphMatrix {
 private:
     std::vector<std::vector<EdgeValue>> adjMatrix;
     std::map<VertexId, int> vertexToIndexMap;
@@ -27,8 +27,8 @@ public:
     static constexpr EdgeValue NO_EDGE = 0;
     static constexpr EdgeValue DEFAULT_EDGE = 1;
 
-    Graph();
-    static Graph make();
+    ADTGraphMatrix();
+    static ADTGraphMatrix make();
 
     size_t getNumVertices() const;
     bool vertexExists(VertexId x) const;
@@ -48,4 +48,4 @@ public:
     void exportToDotFile(const std::string& filename) const;
 };
 
-#endif // GRAPH_HPP
+#endif // ADT_GRAPH_MATRIX_HPP

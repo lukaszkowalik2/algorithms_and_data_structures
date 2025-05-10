@@ -1,4 +1,4 @@
-#include "graph.hpp"
+#include "adt-graph-matrix.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -10,7 +10,7 @@ void printTestResult(const std::string & testName, bool passed) {
 }
 
 void testAddVertex() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
 
@@ -24,7 +24,7 @@ void testAddVertex() {
 }
 
 void testAddEdge() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addEdge(1, 2, 5);
@@ -38,7 +38,7 @@ void testAddEdge() {
 }
 
 void testRemoveEdge() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addEdge(1, 2, 5);
@@ -53,7 +53,7 @@ void testRemoveEdge() {
 }
 
 void testRemoveVertex() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addEdge(1, 2, 5);
@@ -69,7 +69,7 @@ void testRemoveVertex() {
 }
 
 void testNeighbours() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addVertex(3, 30);
@@ -85,7 +85,7 @@ void testNeighbours() {
 }
 
 void testSetVertexValue() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.setVertexValue(1, 20);
 
@@ -94,7 +94,7 @@ void testSetVertexValue() {
 }
 
 void testSetEdgeValue() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addEdge(1, 2, 1);
@@ -107,7 +107,7 @@ void testSetEdgeValue() {
 }
 
 void testSelfLoop() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addEdge(1, 1, 5);
 
@@ -118,13 +118,13 @@ void testSelfLoop() {
 }
 
 void testEmptyGraph() {
-  Graph g;
+  ADTGraphMatrix g;
   bool passed = g.getNumVertices() == 0;
   printTestResult("Empty Graph Test", passed);
 }
 
 void testMultipleVertexRemoval() {
-  Graph g;
+  ADTGraphMatrix g;
   g.addVertex(1, 10);
   g.addVertex(2, 20);
   g.addVertex(3, 30);
@@ -141,93 +141,91 @@ void testMultipleVertexRemoval() {
 }
 
 void generateExampleGraphs() {
-    std::system("mkdir -p build charts");
+  std::system("mkdir -p build charts");
 
-    Graph promptK3;
-    promptK3.addVertex(10, 101);
-    promptK3.addVertex(20, 102);
-    promptK3.addVertex(30, 103);
-    promptK3.addEdge(10, 20, 5);
-    promptK3.addEdge(10, 30, 6);
-    promptK3.addEdge(20, 30, 7);
-    promptK3.exportToDotFile("build/prompt_k3_graph.dot");
-    std::system(
-        "dot -Tpng build/prompt_k3_graph.dot -o charts/prompt_k3_graph.png");
+  ADTGraphMatrix promptK3;
+  promptK3.addVertex(10, 101);
+  promptK3.addVertex(20, 102);
+  promptK3.addVertex(30, 103);
+  promptK3.addEdge(10, 20, 5);
+  promptK3.addEdge(10, 30, 6);
+  promptK3.addEdge(20, 30, 7);
+  promptK3.exportToDotFile("build/prompt_k3_graph.dot");
+  
+  std::system("dot -Tpng build/prompt_k3_graph.dot -o charts/prompt_k3_graph.png");
 
-    Graph cycleC4;
-    cycleC4.addVertex(1, 11);
-    cycleC4.addVertex(2, 12);
-    cycleC4.addVertex(3, 13);
-    cycleC4.addVertex(4, 14);
-    cycleC4.addEdge(1, 2, 101);
-    cycleC4.addEdge(2, 3, 102);
-    cycleC4.addEdge(3, 4, 103);
-    cycleC4.addEdge(4, 1, 104);
-    cycleC4.exportToDotFile("build/cycle_c4_graph.dot");
-    std::system(
-        "dot -Tpng build/cycle_c4_graph.dot -o charts/cycle_c4_graph.png");
+  ADTGraphMatrix cycleC4;
+  cycleC4.addVertex(1, 11);
+  cycleC4.addVertex(2, 12);
+  cycleC4.addVertex(3, 13);
+  cycleC4.addVertex(4, 14);
+  cycleC4.addEdge(1, 2, 101);
+  cycleC4.addEdge(2, 3, 102);
+  cycleC4.addEdge(3, 4, 103);
+  cycleC4.addEdge(4, 1, 104);
+  cycleC4.exportToDotFile("build/cycle_c4_graph.dot");
+  
+  std::system("dot -Tpng build/cycle_c4_graph.dot -o charts/cycle_c4_graph.png");
 
-    Graph disconnected;
-    disconnected.addVertex(101, 201);
-    disconnected.addVertex(102, 202);
-    disconnected.addEdge(101, 102, 21);
-    disconnected.addVertex(201, 203);
-    disconnected.addVertex(202, 204);
-    disconnected.addEdge(201, 202, 22);
-    disconnected.addVertex(301, 205);
-    disconnected.exportToDotFile("build/disconnected_graph.dot");
-    std::system("dot -Tpng build/disconnected_graph.dot -o "
-                "charts/disconnected_graph.png");
-    std::cout << "Generated Disconnected Graph." << std::endl;
+  ADTGraphMatrix disconnected;
+  disconnected.addVertex(101, 201);
+  disconnected.addVertex(102, 202);
+  disconnected.addEdge(101, 102, 21);
+  disconnected.addVertex(201, 203);
+  disconnected.addVertex(202, 204);
+  disconnected.addEdge(201, 202, 22);
+  disconnected.addVertex(301, 205);
+  disconnected.exportToDotFile("build/disconnected_graph.dot");
+  
+  std::system("dot -Tpng build/disconnected_graph.dot -o charts/disconnected_graph.png");
 
-    Graph isolatedVertices;
-    isolatedVertices.addVertex(50, 500);
-    isolatedVertices.addVertex(60, 600);
-    isolatedVertices.addVertex(70, 700);
-    isolatedVertices.exportToDotFile("build/isolated_vertices_graph.dot");
-    std::system("dot -Tpng build/isolated_vertices_graph.dot -o "
-                "charts/isolated_vertices_graph.png");
-    std::cout << "Generated Graph with Isolated Vertices." << std::endl;
+  ADTGraphMatrix isolatedVertices;
+  isolatedVertices.addVertex(50, 500);
+  isolatedVertices.addVertex(60, 600);
+  isolatedVertices.addVertex(70, 700);
+  isolatedVertices.exportToDotFile("build/isolated_vertices_graph.dot");
+  
+  std::system("dot -Tpng build/isolated_vertices_graph.dot -o charts/isolated_vertices_graph.png");
 
-    Graph star;
-    star.addVertex(1, 10);
-    star.addVertex(2, 20);
-    star.addVertex(3, 30);
-    star.addVertex(4, 40);
-    star.addEdge(1, 2, 11);
-    star.addEdge(1, 3, 12);
-    star.addEdge(1, 4, 13);
-    star.addEdge(1, 1, 19);
-    star.exportToDotFile("build/star_graph_loop.dot");
-    std::system("dot -Tpng build/star_graph_loop.dot -o "
-                "charts/star_graph_loop.png");
+  ADTGraphMatrix star;
+  star.addVertex(1, 10);
+  star.addVertex(2, 20);
+  star.addVertex(3, 30);
+  star.addVertex(4, 40);
+  star.addEdge(1, 2, 11);
+  star.addEdge(1, 3, 12);
+  star.addEdge(1, 4, 13);
+  star.addEdge(1, 1, 19);
+  star.exportToDotFile("build/star_graph_loop.dot");
+  
+  std::system("dot -Tpng build/star_graph_loop.dot -o charts/star_graph_loop.png");
 
-    Graph pathP4;
-    pathP4.addVertex(71, 701);
-    pathP4.addVertex(72, 702);
-    pathP4.addVertex(73, 703);
-    pathP4.addVertex(74, 704);
-    pathP4.addEdge(71, 72, 31);
-    pathP4.addEdge(72, 73, 32);
-    pathP4.addEdge(73, 74, 33);
-    pathP4.exportToDotFile("build/path_p4_graph.dot");
-    std::system(
-        "dot -Tpng build/path_p4_graph.dot -o charts/path_p4_graph.png");
+  ADTGraphMatrix pathP4;
+  pathP4.addVertex(71, 701);
+  pathP4.addVertex(72, 702);
+  pathP4.addVertex(73, 703);
+  pathP4.addVertex(74, 704);
+  pathP4.addEdge(71, 72, 31);
+  pathP4.addEdge(72, 73, 32);
+  pathP4.addEdge(73, 74, 33);
+  pathP4.exportToDotFile("build/path_p4_graph.dot");
+  
+  std::system("dot -Tpng build/path_p4_graph.dot -o charts/path_p4_graph.png");
 
-    Graph completeK4;
-    completeK4.addVertex(81, 801);
-    completeK4.addVertex(82, 802);
-    completeK4.addVertex(83, 803);
-    completeK4.addVertex(84, 804);
-    completeK4.addEdge(81, 82, 1);
-    completeK4.addEdge(81, 83, 2);
-    completeK4.addEdge(81, 84, 3);
-    completeK4.addEdge(82, 83, 4);
-    completeK4.addEdge(82, 84, 5);
-    completeK4.addEdge(83, 84, 6);
-    completeK4.exportToDotFile("build/complete_k4_graph.dot");
-    std::system("dot -Tpng build/complete_k4_graph.dot -o "
-                "charts/complete_k4_graph.png");
+  ADTGraphMatrix completeK4;
+  completeK4.addVertex(81, 801);
+  completeK4.addVertex(82, 802);
+  completeK4.addVertex(83, 803);
+  completeK4.addVertex(84, 804);
+  completeK4.addEdge(81, 82, 1);
+  completeK4.addEdge(81, 83, 2);
+  completeK4.addEdge(81, 84, 3);
+  completeK4.addEdge(82, 83, 4);
+  completeK4.addEdge(82, 84, 5);
+  completeK4.addEdge(83, 84, 6);
+  completeK4.exportToDotFile("build/complete_k4_graph.dot");
+  
+  std::system("dot -Tpng build/complete_k4_graph.dot -o charts/complete_k4_graph.png");
 }
 
 int main() {

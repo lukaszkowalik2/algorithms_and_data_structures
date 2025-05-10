@@ -131,6 +131,9 @@
     "stdfloat": "cpp",
     "typeindex": "cpp",
     "valarray": "cpp",
-    "hash_map": "cpp"
+    "hash_map": "cpp",
+    "future": "cpp",
+    "queue": "cpp",
+    "ranges": "cpp"
   }
 }

@@ -8,11 +8,11 @@ BENCHMARK_SCRIPT_DIR = $(BASE_DIR)/benchmarks
 DATA_DIR = $(BASE_DIR)/data
 CHARTS_DIR = $(BASE_DIR)/charts
 
-GRAPH_HEADER = $(BASE_DIR)/graph.hpp
-GRAPH_SOURCE = $(BASE_DIR)/graph.cpp
+GRAPH_HEADER = $(BASE_DIR)/adt-graph-matrix.hpp
+GRAPH_SOURCE = $(BASE_DIR)/adt-graph-matrix.cpp
 
-TEST_EXECUTABLE = $(BUILD_DIR)/graph_test
-TEST_SOURCE = $(BASE_DIR)/graph_test.cpp
+TEST_EXECUTABLE = $(BUILD_DIR)/adt-graph-matrix-tests
+TEST_SOURCE = $(BASE_DIR)/adt-graph-matrix-tests.cpp
 
 BENCHMARK_RUNNER_SRC = $(BASE_DIR)/benchmark_runner.cpp
 BENCHMARK_RUNNER_EXE = $(BUILD_DIR)/benchmark_runner

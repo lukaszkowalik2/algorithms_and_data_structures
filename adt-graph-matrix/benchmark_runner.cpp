@@ -1,4 +1,4 @@
-#include "graph.hpp"
+#include "adt-graph-matrix.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -60,8 +60,8 @@ void run_benchmark(
     const std::string& plot_title_base,
     const std::string& xlabel,
     const std::string& ylabel,
-    std::function<void(Graph&, VertexId, VertexId, int)> core_operation_logic,
-    std::function<void(Graph&, int)> prepare_graph_extras = nullptr) {
+    std::function<void(ADTGraphMatrix&, VertexId, VertexId, int)> core_operation_logic,
+    std::function<void(ADTGraphMatrix&, int)> prepare_graph_extras = nullptr) {
 
     std::string data_filename_abs = DATA_DIR_PATH + "/data_" + op_name + ".txt";
     std::ofstream outfile(data_filename_abs);
@@ -75,7 +75,7 @@ void run_benchmark(
     for (int n_val = 0; n_val <= max_v; n_val += std::max(1, max_v / 100)) {
       int n = n_val == 0 ? 2 : n_val;
 
-        Graph g;
+        ADTGraphMatrix g;
         for (int i = 0; i < n; ++i) {
             g.addVertex(i);
         }
@@ -128,37 +128,37 @@ int main() {
     const int REP_ONE = 1;
 
     run_benchmark("adjacent", 10000, REP_AVG, "adjacent(G, x, y)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             volatile bool res = g.adjacent(v1, v2); (void)res;
         },
-        [](Graph& g, int n_val){
+        [](ADTGraphMatrix& g, int n_val){
             for(int i=0; i < n_val / 2; ++i) {
                 if (n_val > 1) g.addEdge(rand()%n_val, rand()%n_val);
             }
         });
 
     run_benchmark("neighbours", 10000, REP_ONE, "neighbours(G, x)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             volatile std::vector<VertexId> res = g.neighbours(v1); (void)res;
         },
-        [](Graph& g, int n_val){ 
+        [](ADTGraphMatrix& g, int n_val){ 
             for(int i=0; i < 2 * n_val; ++i) {
                  if (n_val > 1) g.addEdge(rand()%n_val, rand()%n_val);
             }
         });
 
     run_benchmark("addVertex", 10000, REP_ONE, "addVertex(G, v)", "Vertices before add (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             g.addVertex(n_val);
         });
 
     run_benchmark("removeVertex", 10000, REP_ONE, "removeVertex(G, v)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1)) g.removeVertex(v1);
         });
 
     run_benchmark("addEdge", 10000, REP_AVG, "addEdge(G, x, y, val)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1) && g.vertexExists(v2)) {
                 // To correctly average addEdge, we should remove it afterwards if it was new
                 // Or, assume addEdge updates if edge exists.
@@ -168,7 +168,7 @@ int main() {
         });
 
     run_benchmark("removeEdge", 10000, REP_AVG, "removeEdge(G, x, y)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1) && g.vertexExists(v2)) {
                  bool edge_existed_before_remove = g.adjacent(v1,v2);
                  if (!edge_existed_before_remove) g.addEdge(v1,v2); // Ensure edge exists for removal
@@ -184,7 +184,7 @@ int main() {
         });
 
     run_benchmark("getVertexValue", 10000, REP_AVG, "getVertexValue(G, x)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1)) {
                 g.setVertexValue(v1, rand()%100);
                 volatile std::optional<VertexValue> res = g.getVertexValue(v1); (void)res;
@@ -192,12 +192,12 @@ int main() {
         });
 
     run_benchmark("setVertexValue", 10000, REP_AVG, "setVertexValue(G, x, val)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1)) g.setVertexValue(v1, rand() % 100);
         });
 
     run_benchmark("getEdgeValue", 10000, REP_AVG, "getEdgeValue(G, x, y)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
              if (g.vertexExists(v1) && g.vertexExists(v2)) {
                 if(!g.adjacent(v1,v2)) g.addEdge(v1,v2, rand()%100);
                 else g.setEdgeValue(v1,v2, rand()%100);
@@ -206,7 +206,7 @@ int main() {
         });
 
     run_benchmark("setEdgeValue", 10000, REP_AVG, "setEdgeValue(G, x, y, val)", "Number of Vertices (N)", "Time (microseconds)",
-        [](Graph& g, VertexId v1, VertexId v2, int n_val) {
+        [](ADTGraphMatrix& g, VertexId v1, VertexId v2, int n_val) {
             if (g.vertexExists(v1) && g.vertexExists(v2)) {
                 if(!g.adjacent(v1,v2)) g.addEdge(v1,v2, rand()%100); // Ensure edge exists
                 g.setEdgeValue(v1, v2, rand() % 100);
