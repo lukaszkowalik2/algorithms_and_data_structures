@@ -152,7 +152,7 @@ void generateExampleGraphs() {
   promptK3.addEdge(20, 30, 7);
   promptK3.exportToDotFile("build/prompt_k3_graph.dot");
   
-  std::system("dot -Tpng build/prompt_k3_graph.dot -o charts/prompt_k3_graph.png");
+  std::system("dot -Tpng build/prompt_k3_graph.dot -o charts/matrix_graph_prompt_k3.png");
 
   ADTGraphMatrix cycleC4;
   cycleC4.addVertex(1, 11);
@@ -165,7 +165,7 @@ void generateExampleGraphs() {
   cycleC4.addEdge(4, 1, 104);
   cycleC4.exportToDotFile("build/cycle_c4_graph.dot");
   
-  std::system("dot -Tpng build/cycle_c4_graph.dot -o charts/cycle_c4_graph.png");
+  std::system("dot -Tpng build/cycle_c4_graph.dot -o charts/matrix_graph_cycle_c4.png");
 
   ADTGraphMatrix disconnected;
   disconnected.addVertex(101, 201);
@@ -177,7 +177,7 @@ void generateExampleGraphs() {
   disconnected.addVertex(301, 205);
   disconnected.exportToDotFile("build/disconnected_graph.dot");
   
-  std::system("dot -Tpng build/disconnected_graph.dot -o charts/disconnected_graph.png");
+  std::system("dot -Tpng build/disconnected_graph.dot -o charts/matrix_graph_disconnected.png");
 
   ADTGraphMatrix isolatedVertices;
   isolatedVertices.addVertex(50, 500);
@@ -185,7 +185,7 @@ void generateExampleGraphs() {
   isolatedVertices.addVertex(70, 700);
   isolatedVertices.exportToDotFile("build/isolated_vertices_graph.dot");
   
-  std::system("dot -Tpng build/isolated_vertices_graph.dot -o charts/isolated_vertices_graph.png");
+  std::system("dot -Tpng build/isolated_vertices_graph.dot -o charts/matrix_graph_isolated_vertices.png");
 
   ADTGraphMatrix star;
   star.addVertex(1, 10);
@@ -198,7 +198,7 @@ void generateExampleGraphs() {
   star.addEdge(1, 1, 19);
   star.exportToDotFile("build/star_graph_loop.dot");
   
-  std::system("dot -Tpng build/star_graph_loop.dot -o charts/star_graph_loop.png");
+  std::system("dot -Tpng build/star_graph_loop.dot -o charts/matrix_graph_star_loop.png");
 
   ADTGraphMatrix pathP4;
   pathP4.addVertex(71, 701);
@@ -210,7 +210,7 @@ void generateExampleGraphs() {
   pathP4.addEdge(73, 74, 33);
   pathP4.exportToDotFile("build/path_p4_graph.dot");
   
-  std::system("dot -Tpng build/path_p4_graph.dot -o charts/path_p4_graph.png");
+  std::system("dot -Tpng build/path_p4_graph.dot -o charts/matrix_graph_path_p4.png");
 
   ADTGraphMatrix completeK4;
   completeK4.addVertex(81, 801);
@@ -225,7 +225,7 @@ void generateExampleGraphs() {
   completeK4.addEdge(83, 84, 6);
   completeK4.exportToDotFile("build/complete_k4_graph.dot");
   
-  std::system("dot -Tpng build/complete_k4_graph.dot -o charts/complete_k4_graph.png");
+  std::system("dot -Tpng build/complete_k4_graph.dot -o charts/matrix_graph_complete_k4.png");
 }
 
 int main() {
