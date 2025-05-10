@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-
+#include <fstream>
 const EdgeValue NO_EDGE = 0;
 const EdgeValue DEFAULT_EDGE = 1;
 
@@ -219,4 +219,50 @@ void Graph::printMatrix() const {
   for (const auto &pair : vertexToIndexMap) {
     std::cout << "ID " << pair.first << " -> Index " << pair.second << std::endl;
   }
+}
+
+void Graph::exportToDotFile(const std::string& filename) const {
+    std::ofstream outfile(filename);
+    if (!outfile.is_open()) {
+        std::cerr << "Error: Could not open file " << filename
+                  << " for writing." << std::endl;
+        return;
+    }
+
+    outfile << "graph G {\n";
+    outfile << "  // Node definitions\n";
+    for (size_t i = 0; i < currentNumVertices; ++i) {
+        VertexId v_id = indexToVertexMap[i];
+        VertexValue v_val = vertexValuesStore[i];
+        outfile << "  " << v_id;
+        outfile << " [label=\"" << v_id << " (val:" << v_val << ")\"]";
+        outfile << ";\n";
+    }
+
+    outfile << "\n  // Edge definitions\n";
+    for (size_t i = 0; i < currentNumVertices; ++i) {
+        for (size_t j = i + 1; j < currentNumVertices; ++j) {
+            if (adjMatrix[i][j] != NO_EDGE) {
+                VertexId v1_id = indexToVertexMap[i];
+                VertexId v2_id = indexToVertexMap[j];
+                EdgeValue e_val = adjMatrix[i][j];
+                outfile << "  " << v1_id << " -- " << v2_id;
+                outfile << " [label=\"" << e_val << "\"]";
+                outfile << ";\n";
+            }
+        }
+    }
+
+    for (size_t i = 0; i < currentNumVertices; ++i) {
+        if (adjMatrix[i][i] != NO_EDGE) {
+            VertexId v_id = indexToVertexMap[i];
+            EdgeValue e_val = adjMatrix[i][i];
+            outfile << "  " << v_id << " -- " << v_id;
+            outfile << " [label=\"" << e_val << "\"]";
+            outfile << ";\n";
+        }
+    }
+
+    outfile << "}\n";
+    outfile.close();
 }

@@ -45,6 +45,7 @@ public:
     void setEdgeValue(VertexId x, VertexId y, EdgeValue v);
 
     void printMatrix() const;
+    void exportToDotFile(const std::string& filename) const;
 };
 
 #endif // GRAPH_HPP
