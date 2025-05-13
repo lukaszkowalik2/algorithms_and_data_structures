@@ -88,15 +88,13 @@ $(BENCHMARK_RUN_STAMP): $(BENCHMARK_RUNNER_EXE) | directories
 	./$(BENCHMARK_RUNNER_EXE)
 	@touch $(BENCHMARK_RUN_STAMP)
 
-generate_all_plots: directories generate_matrix_plots generate_list_plots generate_combined_plots generate_category_plots
+generate_all_plots: directories generate_matrix_plots generate_list_plots generate_combined_plots
 
 generate_matrix_plots: directories $(foreach op, $(OPERATIONS), $(CHARTS_DIR)/plot_$(op)_matrix.png)
 
 generate_list_plots: directories $(foreach op, $(OPERATIONS), $(CHARTS_DIR)/plot_$(op)_list.png)
 
 generate_combined_plots: directories $(foreach op, $(OPERATIONS), $(CHARTS_DIR)/plot_$(op)_combined.png)
-
-generate_category_plots: directories $(CHARTS_DIR)/plot_vertex_operations.png $(CHARTS_DIR)/plot_edge_operations.png $(CHARTS_DIR)/plot_query_operations.png
 
 run_charts: directories compile_benchmark_runner execute_benchmark_runner generate_all_plots
 
