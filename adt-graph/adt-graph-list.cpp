@@ -51,7 +51,7 @@ void ADTGraphList::addVertex(VertexId x, VertexValue val) {
     return;
   }
   vertexValuesStore[x] = val;
-  adjList[x];
+  adjList[x] = std::list<std::pair<VertexId, EdgeValue>>();
 }
 
 // 4. removeVertex(G, x)
@@ -75,7 +75,7 @@ void ADTGraphList::addEdge(VertexId x, VertexId y, EdgeValue val) {
   if (!vertexExists(x) || !vertexExists(y)) {
     return;
   }
-  if (val == NO_EDGE_SENTINEL && val != 0) {
+  if (val == NO_EDGE && val != 0) {
     removeEdge(x, y);
     return;
   }
@@ -114,7 +114,7 @@ void ADTGraphList::removeEdge(VertexId x, VertexId y) {
 }
 
 // 7. getVertexValue(G, x)
-std::optional < VertexValue > ADTGraphList::getVertexValue(VertexId x) const {
+std::optional<VertexValue> ADTGraphList::getVertexValue(VertexId x) const {
   if (!vertexExists(x)) {
     return std::nullopt;
   }
@@ -131,7 +131,7 @@ void ADTGraphList::setVertexValue(VertexId x, VertexValue v) {
 }
 
 // 9. getEdgeValue(G, x, y)
-std::optional < EdgeValue > ADTGraphList::getEdgeValue(VertexId x, VertexId y) const {
+std::optional<EdgeValue> ADTGraphList::getEdgeValue(VertexId x, VertexId y) const {
   if (!vertexExists(x) || !vertexExists(y)) {
     return std::nullopt;
   }
@@ -151,7 +151,7 @@ void ADTGraphList::setEdgeValue(VertexId x, VertexId y, EdgeValue v) {
   if (!vertexExists(x) || !vertexExists(y)) {
     return;
   }
-  if (v == NO_EDGE_SENTINEL && v != 0) {
+  if (v == NO_EDGE && v != 0) {
     removeEdge(x, y);
     return;
   }

@@ -19,8 +19,8 @@ private:
     std::map<VertexId, VertexValue> vertexValuesStore;
 
 public:
-    static constexpr EdgeValue NO_EDGE_SENTINEL = 0;
-    static constexpr EdgeValue DEFAULT_EDGE_VALUE = 1;
+    static constexpr EdgeValue NO_EDGE = 0;
+    static constexpr EdgeValue DEFAULT_EDGE = 1;
 
     ADTGraphList();
 
@@ -31,7 +31,7 @@ public:
     std::vector<VertexId> neighbours(VertexId x) const;
     void addVertex(VertexId x, VertexValue val = VertexValue{});
     void removeVertex(VertexId x);
-    void addEdge(VertexId x, VertexId y, EdgeValue val = DEFAULT_EDGE_VALUE);
+    void addEdge(VertexId x, VertexId y, EdgeValue val = DEFAULT_EDGE);
     void removeEdge(VertexId x, VertexId y);
     std::optional<VertexValue> getVertexValue(VertexId x) const;
     void setVertexValue(VertexId x, VertexValue v);
