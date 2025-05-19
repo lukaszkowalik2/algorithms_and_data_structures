@@ -8,6 +8,9 @@ BENCHMARK_SCRIPT_DIR = $(BASE_DIR)/benchmarks
 DATA_DIR = $(BASE_DIR)/data
 CHARTS_DIR = $(BASE_DIR)/charts
 
+TRAFFIC_PHASES_SOURCE = $(BASE_DIR)/traffic_phases.cpp
+TRAFFIC_PHASES_EXECUTABLE = $(BUILD_DIR)/traffic_phases
+
 MATRIX_HEADER = $(BASE_DIR)/adt-graph-matrix.hpp
 MATRIX_SOURCE = $(BASE_DIR)/adt-graph-matrix.cpp
 MATRIX_TEST_EXECUTABLE = $(BUILD_DIR)/adt-graph-matrix-tests
@@ -50,9 +53,9 @@ PLOT_FILES = $(foreach op, $(OPERATIONS), $(CHARTS_DIR)/plot_$(op)_matrix.png $(
 
 BENCHMARK_RUN_STAMP = $(BENCHMARK_SCRIPT_DIR)/.benchmark_run_completed
 
-.PHONY: all clean directories run_tests run_charts compile_benchmark_runner execute_benchmark_runner generate_all_plots matrix list
+.PHONY: all clean directories run_tests run_charts compile_benchmark_runner execute_benchmark_runner generate_all_plots matrix list traffic_phases run_traffic_phases generate_traffic_graph
 
-all: matrix list
+all: matrix list traffic_phases
 
 matrix: run_matrix_tests run_matrix_charts
 
@@ -122,9 +125,21 @@ $(CHARTS_DIR)/plot_query_operations.png: $(BENCHMARK_SCRIPT_DIR)/plot_query_oper
 	@mkdir -p $(CHARTS_DIR)
 	cd $(BENCHMARK_SCRIPT_DIR) && gnuplot plot_query_operations.gp
 
+traffic_phases: $(TRAFFIC_PHASES_EXECUTABLE)
+
+$(TRAFFIC_PHASES_EXECUTABLE): $(TRAFFIC_PHASES_SOURCE) $(LIST_SOURCE) $(LIST_HEADER) | directories
+	$(CXX) $(CXXFLAGS) $(TRAFFIC_PHASES_SOURCE) $(LIST_SOURCE) -o $(TRAFFIC_PHASES_EXECUTABLE) $(LDFLAGS)
+
+run_traffic_phases: $(TRAFFIC_PHASES_EXECUTABLE)
+	./$(TRAFFIC_PHASES_EXECUTABLE)
+
+generate_traffic_graph: run_traffic_phases
+	dot -Tpng charts/traffic_phases.dot -o charts/traffic_phases.png
+
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -f $(EXPECTED_DATA_FILES)
 	rm -f $(EXPECTED_GNUPLOT_SCRIPTS)
 	rm -f $(PLOT_FILES)
 	rm -f $(BENCHMARK_RUN_STAMP)
+	rm -f charts/traffic_phases.dot charts/traffic_phases.png
