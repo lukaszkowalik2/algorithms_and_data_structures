@@ -159,12 +159,12 @@ int main() {
 
   int num_other_nodes = 4;
   std::vector<std::string> other_task_names = {
-    "Zadanie A", "Zadanie C", "Zadanie B", "Zadanie D"};
+    "Zadanie A", "Zadanie B", "Zadanie C", "Zadanie D"};
   std::vector<std::vector<int>> other_adj(num_other_nodes);
-  other_adj[0].push_back(1); // A -> C
-  other_adj[1].push_back(2); // C -> B
-  other_adj[2].push_back(3); // B -> D
-  other_adj[1].push_back(3); // C -> D
+  other_adj[3].push_back(0); // A -> B
+  other_adj[0].push_back(1); // B -> C
+  other_adj[1].push_back(2); // C -> D
+  other_adj[2].push_back(3); // D -> A
 
   save_to_dat_file("build/other_tasks.dat", num_other_nodes, other_task_names, other_adj);
   generate_dot_and_png("other_tasks", num_other_nodes, other_task_names, other_adj);
