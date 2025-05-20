@@ -1,6 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17
-LDFLAGS = -lgvc -lcgraph -lcdt
+CXXFLAGS = -Wall -Wextra -std=c++17 -lstdc++fs
 
 BUILD_DIR = build
 SRC_DIR = .
@@ -14,20 +13,15 @@ $(shell mkdir -p $(BUILD_DIR))
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $(TARGET) $(LDFLAGS)
+	$(CXX) $(OBJ) -o $(TARGET)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-run: $(TARGET)
+run: all
 	./$(TARGET)
-
-visualize: $(TARGET)
-	./$(TARGET)
-	dot -Tpng $(BUILD_DIR)/pancake_tasks.dot -o $(BUILD_DIR)/pancake_tasks.png
-	dot -Tpng $(BUILD_DIR)/other_tasks.dot -o $(BUILD_DIR)/other_tasks.png
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean run visualize 
+.PHONY: all clean run

@@ -4,8 +4,8 @@
 #include <queue>
 #include <algorithm>
 #include <fstream>
-#include <graphviz/gvc.h>
-#include <graphviz/cgraph.h>
+#include <filesystem>
+#include <cstdlib>
 
 std::vector<int> topological_sort(
   int num_nodes,
@@ -51,66 +51,71 @@ std::vector<int> topological_sort(
   return top_order;
 }
 
-void generate_dot_file(const std::string& filename,
+void generate_dot_and_png(const std::string& base_name,
+                       int num_nodes,
+                       const std::vector<std::string>& node_names,
+                       const std::vector<std::vector<int>>& adj) {
+  std::string dot_file = "build/" + base_name + ".dot";
+  std::string png_file = "build/" + base_name + ".png";
+  
+  std::ofstream out(dot_file);
+  out << "digraph G {\n";
+  out << "  rankdir=LR;\n";
+  out << "  node [shape=box, style=filled, fillcolor=lightblue];\n\n";
+  
+  for (int i = 0; i < num_nodes; ++i) {
+    out << "  \"" << i << "\" [label=\"" << node_names[i] << "\"];\n";
+  }
+  out << "\n";
+  
+  for (int u = 0; u < num_nodes; ++u) {
+    for (int v : adj[u]) {
+      out << "  \"" << u << "\" -> \"" << v << "\";\n";
+    }
+  }
+  
+  out << "}\n";
+  out.close();
+
+  std::string command = "dot -Tpng " + dot_file + " -o " + png_file;
+  std::system(command.c_str());
+}
+
+void ensure_directories_exist() {
+  std::filesystem::create_directory("build");
+}
+
+void save_to_dat_file(const std::string& filename,
                     int num_nodes,
                     const std::vector<std::string>& node_names,
                     const std::vector<std::vector<int>>& adj) {
-  std::ofstream dot_file(filename);
-  dot_file << "digraph G {\n";
-  dot_file << "  rankdir=LR;\n";
-  dot_file << "  node [shape=box, style=filled, fillcolor=lightblue];\n\n";
+  std::ofstream dat_file(filename);
+  dat_file << "Number of nodes: " << num_nodes << "\n\n";
   
+  dat_file << "Nodes:\n";
   for (int i = 0; i < num_nodes; ++i) {
-    dot_file << "  " << i << " [label=\"" << node_names[i] << "\"];\n";
+    dat_file << i << ": " << node_names[i] << "\n";
   }
-  dot_file << "\n";
+  dat_file << "\nAdjacency list:\n";
   
   for (int u = 0; u < num_nodes; ++u) {
-    for (int v : adj[u]) {
-      dot_file << "  " << u << " -> " << v << ";\n";
+    if (!adj[u].empty()) {
+      dat_file << u << " -> ";
+      for (size_t i = 0; i < adj[u].size(); ++i) {
+        dat_file << adj[u][i];
+        if (i < adj[u].size() - 1) {
+          dat_file << ", ";
+        }
+      }
+      dat_file << "\n";
     }
   }
-  
-  dot_file << "}\n";
-  dot_file.close();
-}
-
-void generate_graph_png(const std::string& filename,
-                     int num_nodes,
-                     const std::vector<std::string>& node_names,
-                     const std::vector<std::vector<int>>& adj) {
-  Agraph_t* g = agopen(const_cast<char*>("G"), Agdirected, nullptr);
-  
-  agattr(g, AGRAPH, const_cast<char*>("rankdir"), const_cast<char*>("LR"));
-  agattr(g, AGNODE, const_cast<char*>("shape"), const_cast<char*>("box"));
-  agattr(g, AGNODE, const_cast<char*>("style"), const_cast<char*>("filled"));
-  agattr(g, AGNODE, const_cast<char*>("fillcolor"), const_cast<char*>("lightblue"));
-  agattr(g, AGNODE, const_cast<char*>("fontname"), const_cast<char*>("Arial"));
-  agattr(g, AGNODE, const_cast<char*>("fontsize"), const_cast<char*>("12"));
-  agattr(g, AGEDGE, const_cast<char*>("fontname"), const_cast<char*>("Arial"));
-  agattr(g, AGEDGE, const_cast<char*>("fontsize"), const_cast<char*>("10"));
-  
-  std::vector<Agnode_t*> nodes(num_nodes);
-  for (int i = 0; i < num_nodes; ++i) {
-    nodes[i] = agnode(g, const_cast<char*>(node_names[i].c_str()), 1);
-  }
-  
-  for (int u = 0; u < num_nodes; ++u) {
-    for (int v : adj[u]) {
-      agedge(g, nodes[u], nodes[v], nullptr, 1);
-    }
-  }
-  
-  GVC_t* gvc = gvContext();
-  gvLayout(gvc, g, const_cast<char*>("dot"));
-  gvRenderFilename(gvc, g, const_cast<char*>("png"), filename.c_str());
-  
-  gvFreeLayout(gvc, g);
-  agclose(g);
-  gvFreeContext(gvc);
+  dat_file.close();
 }
 
 int main() {
+  ensure_directories_exist();
+  
   int num_pancake_tasks = 6;
   std::vector<std::string> pancake_task_names = {
     "Nagrzać patelnię",
@@ -129,27 +134,8 @@ int main() {
   pancake_adj[3].push_back(5); // Przewrócić i podpiec -> Zjeść
   pancake_adj[4].push_back(5); // Podgrzać syrop -> Zjeść
 
-  generate_graph_png("build/pancake_tasks.png", num_pancake_tasks, pancake_task_names, pancake_adj);
-
-  std::cout << "--- Proces robienia naleśników ---" << std::endl;
-  std::cout << "Reprezentacja procesu jako graf G:" << std::endl;
-  std::cout << "Węzły (czynności):" << std::endl;
-  for (int i = 0; i < num_pancake_tasks; ++i) {
-    std::cout << i << ": " << pancake_task_names[i] << std::endl;
-  }
-  std::cout << "\nKrawędzie (zależności 'czynność U -> czynność V' "
-               "oznacza, że U musi być wykonane przed V):"
-            << std::endl;
-  for (int u = 0; u < num_pancake_tasks; ++u) {
-    if (!pancake_adj[u].empty()) {
-      for (int v : pancake_adj[u]) {
-        std::cout << u << " (" << pancake_task_names[u] << ") -> "
-                  << v << " (" << pancake_task_names[v] << ")"
-                  << std::endl;
-      }
-    }
-  }
-  std::cout << std::endl;
+  save_to_dat_file("build/pancake_tasks.dat", num_pancake_tasks, pancake_task_names, pancake_adj);
+  generate_dot_and_png("pancake_tasks", num_pancake_tasks, pancake_task_names, pancake_adj);
 
   std::cout << "Sugerowana kolejność wykonywania czynności przy robieniu "
                "naleśników:"
@@ -170,24 +156,18 @@ int main() {
   }
 
   std::cout << "\n\n--- Uogólnienie programu ---" << std::endl;
-  std::cout
-    << "Funkcja 'topological_sort(num_nodes, adj)' jest ogólna i "
-       "przyjmuje dowolny graf G \nreprezentowany przez liczbę węzłów "
-       "oraz listę sąsiedztwa."
-    << std::endl;
-  std::cout << "Przykład użycia dla innego, prostego grafu zadań:"
-            << std::endl;
 
   int num_other_nodes = 4;
   std::vector<std::string> other_task_names = {
-    "Zadanie A", "Zadanie B", "Zadanie C", "Zadanie D"};
+    "Zadanie A", "Zadanie C", "Zadanie B", "Zadanie D"};
   std::vector<std::vector<int>> other_adj(num_other_nodes);
-  other_adj[0].push_back(1); // A -> B
-  other_adj[0].push_back(2); // A -> C
-  other_adj[1].push_back(3); // B -> D
-  other_adj[2].push_back(3); // C -> D
+  other_adj[0].push_back(1); // A -> C
+  other_adj[1].push_back(2); // C -> B
+  other_adj[2].push_back(3); // B -> D
+  other_adj[1].push_back(3); // C -> D
 
-  generate_graph_png("build/other_tasks.png", num_other_nodes, other_task_names, other_adj);
+  save_to_dat_file("build/other_tasks.dat", num_other_nodes, other_task_names, other_adj);
+  generate_dot_and_png("other_tasks", num_other_nodes, other_task_names, other_adj);
 
   std::cout << "Węzły przykładowego grafu:" << std::endl;
   for (int i = 0; i < num_other_nodes; ++i) {
